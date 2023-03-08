@@ -16,11 +16,13 @@ import {
   TitlePageNameStyled,
   IconButtonStyled
 } from './styles/NavBarStyles';
+import { useNavigate } from 'react-router-dom';
 
-const pages = ['Udemy', 'Coursera', 'Edx', 'Skillshare'];
+export const providers = ['Udemy', 'Coursera', 'EDX', 'SkillShare'];
 
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -29,6 +31,11 @@ const NavBar = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const redirect = ( category ) => () => {
+    console.log(category);
+    navigate(`/category/${category}`);
+  }
 
   return (
     <MainAppBarStyled position="static">
@@ -75,9 +82,13 @@ const NavBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <LinkItemTypographyStyled textAlign="center">{page}</LinkItemTypographyStyled>
+              {providers.map((page) => (
+                <MenuItem key={page} onClick={redirect(page)}>
+                  <LinkItemTypographyStyled
+                    textAlign="center"
+                  >
+                    {page}
+                  </LinkItemTypographyStyled>
                 </MenuItem>
               ))}
             </Menu>
@@ -96,10 +107,10 @@ const NavBar = () => {
             Learning In
           </TitlePageNameStyled>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {providers.map((page) => (
               <ButtonMenuItemStyled
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={redirect(page)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
