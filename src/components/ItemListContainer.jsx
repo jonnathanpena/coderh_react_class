@@ -4,10 +4,13 @@ import {
   TypographyListTitleStyled,
   GridCoursesListContainerStyled
 } from './styles/ItemListContainerStyles';
-import useDataHooks from '../hooks/useDataHooks';
 import Item from './Item';
 import { Grid } from '@mui/material';
 import { providers } from './NavBar';
+import {
+  getDb, courseCollectionName
+} from '../services/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 const ItemListContainmer = (props) => {
   const {
@@ -15,10 +18,13 @@ const ItemListContainmer = (props) => {
     categories = providers
   } = props;
   const [courses, setCourses] = useState(undefined);
-  const { getFetchData } = useDataHooks();
 
   useEffect(() => {
-    getFetchData().then(( data ) => setCourses(data));
+    const db = getDb();
+    const coursesCollection = collection(db, courseCollectionName);
+    getDocs(coursesCollection).then(( snapshot ) => {
+      setCourses(snapshot.docs.map(( course ) => course.data() ));
+    });
   }, []);
 
   return (
@@ -38,6 +44,7 @@ const ItemListContainmer = (props) => {
                   name={course.name}
                   provider={course.provider}
                   imageUrl={course.imageUrl}
+                  price={course.price}
                 />
               </Grid>
             ))}

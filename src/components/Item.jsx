@@ -12,6 +12,7 @@ const Item = ( props ) => {
     name,
     provider,
     imageUrl,
+    price,
     noshadow = false,
     clickDisabled = false,
   } = props;
@@ -26,12 +27,18 @@ const Item = ( props ) => {
   };
 
   return (
-    <MainStackItemContainerStyled shadow={noshadow ? 0 : 1} onClick={handledItemClick(id)}>
-      <ImageCourseStyled alt="course image" src={imageUrl} />
-      <TypographyCourseTitleStyled>
+    <MainStackItemContainerStyled shadow={noshadow ? 0 : 1}>
+      <ImageCourseStyled alt="course image" src={imageUrl} onClick={handledItemClick(id)}/>
+      <TypographyCourseTitleStyled onClick={handledItemClick(id)}>
         {name}
       </TypographyCourseTitleStyled>
-      <CourseLogoImageWidget provider={provider} />
+      <CourseLogoImageWidget provider={provider} course={{
+        id,
+        name,
+        provider,
+        imageUrl,
+        price,
+      }} onClick={handledItemClick(id)}/>
     </MainStackItemContainerStyled>
   );
 }

@@ -33,7 +33,6 @@ const NavBar = () => {
   };
 
   const redirect = ( category ) => () => {
-    console.log(category);
     navigate(`/category/${category}`);
   }
 

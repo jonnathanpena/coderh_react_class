@@ -2,18 +2,24 @@ import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Item from '../components/Item';
-import useDataHooks from '../hooks/useDataHooks';
+import { getDb, courseCollectionName } from '../services/firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 const ItemDetailPage = () => {
   const [course, setCourse] = useState(undefined);
   const {
     id
   } = useParams();
-  const { getCourseById } = useDataHooks();
 
   useEffect(() => {
     if (id) {
-      getCourseById(id).then(( item ) => setCourse(item));
+      const db = getDb();
+      const coursesCollection = collection(db, courseCollectionName);
+      const q = query(coursesCollection, where('id', '==', id));
+      getDocs(q).then(( snapshot ) => {
+        const courses = snapshot.docs.map(( c ) => c.data());
+        setCourse(courses[0]);
+      });
     }
   }, [id])
 
@@ -35,6 +41,7 @@ const ItemDetailPage = () => {
           name={course.name}
           provider={course.provider}
           imageUrl={course.imageUrl}
+          price={course.price}
           clickDisabled
         />
     </Box>
