@@ -23,6 +23,7 @@ export const TitlePageNameStyled = styled( Typography )(() => ({
   fontWeight: 700,
   letterSpacing: '.1rem',
   textDecoration: 'none',
+  cursor: 'pointer',
 }));
 
 export const ButtonMenuItemStyled = styled( Button )(() => ({

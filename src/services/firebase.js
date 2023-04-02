@@ -1,6 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore,
+  collection,
+  addDoc
 } from "firebase/firestore";
 
 let db;
@@ -22,3 +24,13 @@ export const getDb = () => {
 
 	return db;
 }
+
+export const saveOrder = async (cart) => {
+	getDb();
+
+	const collectionRef = collection(db, "orders");
+	const response = await addDoc(collectionRef, {cart});
+	console.log("Orden creada correctamente", response.id);
+
+  	return response.id;
+};
